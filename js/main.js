@@ -166,10 +166,10 @@ function displayContacts(data) {
                   <a class="contact-action email" title="Email" href="mailto:${data[i].emailAddress}">
                     <i class="fas fa-envelope"></i>
                   </a>
-                  <button class="contact-action ${data[i].isFavorite &&" active"} favorite" title="Favorite">
+                  <button onclick="toggleFavorite(${data[i].id})" class="contact-action ${data[i].isFavorite &&" active"} favorite" title="Favorite">
                     <i class="far fa-star"></i>
                   </button>
-                  <button class="contact-action ${data[i].isEmergency &&" active"} emergency" title="Emergency">
+                  <button onclick="toggleEmergency(${data[i].id})" class="contact-action ${data[i].isEmergency &&" active"} emergency" title="Emergency">
                     <i class="far fa-heart"></i>
                   </button>
                   <button
@@ -258,13 +258,17 @@ function deleteContact(index) {
 }).then((result) => {
   if (result.isConfirmed){
 
-    for(var i  = 0 ; i <contacts.length;i++){
-        if(contacts[i].id === index) {
-            contacts.splice(i, 1);
-            break;
-        }
+    // for(var i  = 0 ; i <contacts.length;i++){
+    //     if(contacts[i].id === index) {
+    //         contacts.splice(i, 1);
+    //         break;
+    //     }
 
-    }
+    // }
+
+    var temp = getContactById(index);
+    var index = contacts.indexOf(temp);
+    contacts.splice(index, 1);
  
     saveToLocalStorage(contacts);
     displayContacts(contacts);
@@ -328,13 +332,16 @@ function updateContact() {
 
     // 
 
-    for(var i = 0 ; i < contacts.length ; i++){
-        if(contacts[i].id === updateId) {
-            contacts[i] = { ...contacts[i], ...updatedContact };
-            break;
-        }
+    // for(var i = 0 ; i < contacts.length ; i++){
+    //     if(contacts[i].id === updateId) {
+    //         contacts[i] = { ...contacts[i], ...updatedContact };
+    //         break;
+    //     }
 
-    }
+    // }
+
+    var temp = getContactById(updateId);
+    temp = { ...temp, ...updatedContact };
        saveToLocalStorage(contacts);
        displayContacts(contacts);
 
@@ -353,6 +360,11 @@ function updateContact() {
 }
 
 
+
+
+// saveContactBtn.onclick = saveContact;
+
+
 function searchContacts(input) {
 // Debounce: wait 1 second after user stops typing
 setTimeout(() => {
@@ -369,7 +381,30 @@ setTimeout(() => {
 
 }
 
+// Toggle favorite status
+function toggleFavorite(id) {
+    // contacts[index].isFavorite = !contacts[index].isFavorite;
+    var temp = getContactById(id);
+    temp.isFavorite = !temp.isFavorite;
+    saveToLocalStorage(contacts);
+    displayContacts(contacts);
+}
 
-// saveContactBtn.onclick = saveContact;
+// Toggle emergency status
+function toggleEmergency(id) {
+   var temp = getContactById(id)
+    // contacts[index].isEmergency = !contacts[index].isEmergency;
+    temp.isEmergency = !temp.isEmergency;
+    saveToLocalStorage(contacts);
+    displayContacts(contacts);
+}
 
 
+function getContactById(id) {
+    for(var i = 0; i < contacts.length; i++) {
+        if(contacts[i].id === id) {
+            return contacts[i];
+        }
+    }
+    return null;
+}
