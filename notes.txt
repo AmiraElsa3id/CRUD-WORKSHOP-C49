@@ -1,0 +1,20 @@
+1- design 
+2- create contact
+    - selecet elemet
+    - save opject of contact 
+    - array 
+    - local storage
+3- read contact ==> display all contacts
+    - get array from local storage
+    - loop on array and display each contact
+    - update count of contacts
+4- update contact ==> edit contact
+5- delete contact
+
+
+
+
+6- search contact ==> search for contact
+
+7- toggle fav , emergency
+
